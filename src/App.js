@@ -9,12 +9,40 @@ export default function App() {
         <DisplayCounter />
 
         <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-          <OtherStuff />
+          <div>
+            <OtherStuff />
+            <OddOrEven />
+            <ResetNumber />
+          </div>
           <CounterStuff />
         </div>
         <Footer />
       </div>
     </CountProvider>
+  );
+}
+
+function OddOrEven() {
+  const {
+    state: { count }
+  } = useCount();
+
+  return (
+    <div>
+      <h2>Is the number odd or even?</h2>
+      {count % 2 === 0 ? "EVEN" : "ODD"}
+    </div>
+  );
+}
+
+function ResetNumber() {
+  const { dispatch } = useCount();
+
+  return (
+    <div>
+      <h2>Start all over again?</h2>
+      <button onClick={() => dispatch({ type: "reset" })}>Yes please</button>
+    </div>
   );
 }
 
@@ -26,7 +54,7 @@ function OtherStuff() {
   return (
     <div>
       <h2>Other stuff</h2>
-      Hello World
+      Lorem ipsum,...
     </div>
   );
 }
@@ -117,6 +145,9 @@ function countReducer(state, action) {
     }
     case "decrement": {
       return { count: state.count - 1 };
+    }
+    case "reset": {
+      return { count: 0 };
     }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
